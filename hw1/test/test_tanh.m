@@ -14,11 +14,11 @@ function test_tanh()
         
         % naive error
         val_naive = tanh_naive(x);
-        err_naive(i) = abs(val_naive - true_val) / abs(true_val + eps);
+        err_naive(i) = abs(val_naive - true_val) / abs(true_val);
         
         % improve error
         val_improv = tanh_improve(x);
-        err_improv(i) = abs(val_improv - true_val) / abs(true_val + eps);
+        err_improv(i) = abs(val_improv - true_val) / abs(true_val);
 
         fprintf('%-12.4e | %-12.4e | %-12.4e\n', x, err_naive(i), err_improv(i));
     end
