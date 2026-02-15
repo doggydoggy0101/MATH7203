@@ -220,7 +220,7 @@ Size       Error           Status
 We plot out the PCA results.
 ![image](docs/problem3_pca.png)
 
-Since only 3 dimensions are useful, we plot the 3D plot.
+Only 3 dimensions are useful and the remaining 10 dimensions are noise. We plot the 3D plot.
 ![image](docs/problem3_object.png)
 
 This is probably a mushroom (?)
