@@ -1,7 +1,7 @@
 # Homework6
 
 ### Problem1
-image
+![image](docs/problem1.png)
 
 We test it by computing the orthogonality error $Q^\top Q-I$ and zero-element residual $|B_{ij}|$.
 ```
