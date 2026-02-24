@@ -6,3 +6,9 @@
 
 # homework files
 *.zip
+
+# Python
+__pycache__/
+
+# IDEs
+.vscode
