@@ -80,7 +80,7 @@ def draw(pcd1, pcd2, base1, base2, data="bunny", line=True):
 
 
 visualize = True
-data = "3dmatch"
+data = "bunny"
 
 if data == "3dmatch":
     src_reg, dst_reg, gt_reg = get_3dmatch_data()
@@ -92,7 +92,7 @@ if data == "bunny":
         num_point=100,
         rotation=rotation,
         translation=translation,
-        noise_std=0.01,
+        noise_std=10.01,
         random_state=rng,
     )
 
