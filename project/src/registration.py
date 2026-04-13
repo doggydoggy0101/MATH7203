@@ -1,20 +1,25 @@
 import numpy as np
 
 
-def get_zero_mean_point_cloud(pcd):
+def get_zero_mean_point_cloud(pcd, weight=None):
     """
     Gets the zero mean point cloud.
 
     Arguments
 
-    - `pcd` - Input point cloud.
+    - `pcd`    - Input point cloud.
+    - `weight` - Weights for each point (optional).
 
     Returns
 
     - `zm_pcd` - Point cloud with zero mean.
     - `mean`   - Mean of the original point cloud.
     """
-    mean = np.mean(pcd, axis=0)
+    if weight is None:
+        mean = np.mean(pcd, axis=0)
+    else:
+        mean = np.sum(pcd * weight[:, None], axis=0) / np.sum(weight)
+
     zm_pcd = pcd - mean
 
     return zm_pcd, mean
@@ -44,7 +49,7 @@ def project(mat):
     return rot
 
 
-def registrationHorn(pcd1, pcd2):
+def registrationHorn(pcd1, pcd2, weight=None):
     """
     Closed-form solution for registration by Horn.
 
@@ -52,6 +57,7 @@ def registrationHorn(pcd1, pcd2):
 
     - `pcd1`   - Source point cloud.
     - `pcd2`   - Target point cloud.
+    - `weight` - Weights for each point (optional).
 
     Returns
 
@@ -61,7 +67,12 @@ def registrationHorn(pcd1, pcd2):
     zmpcd1, mean1 = get_zero_mean_point_cloud(pcd1)
     zmpcd2, mean2 = get_zero_mean_point_cloud(pcd2)
 
-    rot = project(zmpcd2.T @ zmpcd1)
+    if weight is None:
+        M = zmpcd2.T @ zmpcd1
+    else:
+        M = (zmpcd2 * weight[:, None]).T @ zmpcd1
+
+    rot = project(M)
 
     t = mean2 - rot @ mean1
 

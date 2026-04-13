@@ -1,8 +1,6 @@
 # Numerical Analysis Project
 
-Python implementation of Horn's method for solving point cloud registration.
-
-> B. K.P. Horn. Closed-Form Solution of Absolute Orientation Using Unit Quaternions. *Journal of the Optical Society A,* 4:629–642, 04 1987.
+Python implementation of robust point cloud registration. Baseline registration uses Horn's method, and we implemented Iterative Reweighted Least Squares and Graduated Non-Convexity.
 
 | ![](docs/3dmatch_initial.png) | ![](docs/3dmatch_results.gif) |
 | -------------------------------- | ----------------------------- |
@@ -20,3 +18,5 @@ pip install -r requirements.txt
 ```
 main.py
 ```
+
+![](docs/outlier_rate.png)

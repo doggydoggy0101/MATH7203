@@ -8,6 +8,8 @@ def get_bunny_data(
     rotation,
     translation,
     noise_std=0.01,
+    outlier_ratio=0.0,
+    outlier_scale=10.0,
     random_state=42,
 ):
     np.random.seed(random_state)
@@ -39,6 +41,25 @@ def get_bunny_data(
 
     pcd1 = np.asarray(pcd1o3d.points)
     pcd2 = np.asarray(pcd2o3d.points)
+
+    # apply outliers
+    if outlier_ratio > 0.0:
+        num_outliers = int(num_point * outlier_ratio)
+        outlier_indices = np.random.choice(num_point, num_outliers, replace=False)
+
+        min_bound = np.min(pcd2, axis=0)
+        max_bound = np.max(pcd2, axis=0)
+
+        center = (max_bound + min_bound) / 2.0
+        extent = (max_bound - min_bound) * outlier_scale
+
+        random_points = np.random.uniform(
+            low=center - (extent / 2.0),
+            high=center + (extent / 2.0),
+            size=(num_outliers, 3),
+        ) 
+
+        pcd2[outlier_indices] = random_points
 
     return pcd1, pcd2, se3
 

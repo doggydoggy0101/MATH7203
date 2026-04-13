@@ -2,8 +2,10 @@ import numpy as np
 import open3d as o3d
 from scipy.spatial.transform import Rotation as R
 
-from solver import registrationHorn
-from data import get_bunny_data, get_3dmatch_data
+from src.registration import registrationHorn
+from src.irls import registrationIrls
+from src.gnc import registrationGnc
+from src.data import get_bunny_data, get_3dmatch_data
 
 
 def print_solution(rot, t):
@@ -79,8 +81,15 @@ def draw(pcd1, pcd2, base1, base2, data="bunny", line=True):
     app.run()
 
 
-visualize = True
 data = "bunny"
+noise_std = 0.1
+outlier_ratio = 0.0
+outlier_scale = 4.0
+solver = "base"
+robust_function = "tls"
+threshold_c = 0.2
+visualize = True
+
 
 if data == "3dmatch":
     src_reg, dst_reg, gt_reg = get_3dmatch_data()
@@ -89,10 +98,12 @@ if data == "bunny":
     translation = np.random.RandomState(rng).rand(3) / np.sqrt(3)
     rotation = R.random(random_state=rng).as_matrix()
     src_reg, dst_reg, gt_reg = get_bunny_data(
-        num_point=100,
+        num_point=200,
         rotation=rotation,
         translation=translation,
-        noise_std=10.01,
+        noise_std=noise_std,
+        outlier_ratio=outlier_ratio,
+        outlier_scale=outlier_scale,
         random_state=rng,
     )
 
@@ -113,7 +124,17 @@ if visualize:
     draw(pcd1=src_reg, pcd2=dst_reg, base1=src_base, base2=dst_base, data=data)
 
 
-rot, t = registrationHorn(src_reg, dst_reg)
+if solver == "base":
+    rot, t = registrationHorn(src_reg, dst_reg)
+elif solver == "irls":
+    rot, t = registrationIrls(
+        src_reg, dst_reg, robust_func=robust_function, threshold_c=threshold_c
+    )
+elif solver == "gnc":
+    rot, t = registrationGnc(
+        src_reg, dst_reg, robust_func=robust_function, threshold_c=threshold_c
+    )
+
 print_solution(rot, t)
 
 
