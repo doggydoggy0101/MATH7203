@@ -84,10 +84,10 @@ def draw(pcd1, pcd2, base1, base2, data="bunny", line=True):
 data = "bunny"
 noise_std = 0.1
 outlier_ratio = 0.0
-outlier_scale = 4.0
+outlier_scale = 10.0
 solver = "base"
 robust_function = "tls"
-threshold_c = 0.2
+threshold_c = 0.3
 visualize = True
 
 
@@ -98,7 +98,7 @@ if data == "bunny":
     translation = np.random.RandomState(rng).rand(3) / np.sqrt(3)
     rotation = R.random(random_state=rng).as_matrix()
     src_reg, dst_reg, gt_reg = get_bunny_data(
-        num_point=200,
+        num_point=100,
         rotation=rotation,
         translation=translation,
         noise_std=noise_std,

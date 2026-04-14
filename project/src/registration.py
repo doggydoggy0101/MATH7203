@@ -64,8 +64,8 @@ def registrationHorn(pcd1, pcd2, weight=None):
     - `rot` - Rotation matrix.
     - `t`   - Translation vector.
     """
-    zmpcd1, mean1 = get_zero_mean_point_cloud(pcd1)
-    zmpcd2, mean2 = get_zero_mean_point_cloud(pcd2)
+    zmpcd1, mean1 = get_zero_mean_point_cloud(pcd1, weight)
+    zmpcd2, mean2 = get_zero_mean_point_cloud(pcd2, weight)
 
     if weight is None:
         M = zmpcd2.T @ zmpcd1
